@@ -46,7 +46,7 @@ void readNFA(int &states_num, Qs *states, int &sign_num, char *signs, int &delta
     printf("请输入NFA状态的个数：\n");
     scanf("%d", &states_num);
     printf("请依次输入状态名称，以空格或回车分隔不同状态(请保证状态名称是单个字符)：\n");
-    for(int i = 0; i < states_num; i++)  state[i].state = read();
+    for(int i = 0; i < states_num; i++)  states[i].state = read();
     //读取T
     printf("请输入NFA字母表的个数：\n");
     scanf("%d", &sign_num);
@@ -64,7 +64,7 @@ void readNFA(int &states_num, Qs *states, int &sign_num, char *signs, int &delta
         r = read();
         for(int j = 0; j < states_num; j++)
         {
-            if(state[j].state == p)  state[j].trans.push_back({q, r});
+            if(states[j].state == p)  states[j].trans.push_back({q, r});
         }
     }
     //读取q0
@@ -77,7 +77,7 @@ void readNFA(int &states_num, Qs *states, int &sign_num, char *signs, int &delta
     for(int i = 0; i < F_num; i++) F[i] = read();
 }
 
-void change_to_DFA(vector<NewQ Q1>, char &q0, Qs *state)
+void change_to_DFA(vector<NewQ> Q1, char &q0, Qs *state)
 {
 
 }
