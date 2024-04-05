@@ -33,9 +33,13 @@ typedef struct transfer_new
     set<char> next;
 }Transfer_new;
 
-typedef struct newQ{
+typedef struct newQ
+{
     set<char> stateset;
     vector<Transfer_new> trans;
+    bool operator<(const newQ& other) const {
+        return stateset.size() < other.stateset.size();
+    }
 }NewQ;
 
 char read()//忽略空格和回车，读取字符
@@ -90,6 +94,7 @@ int find_state(char q0, int &state_num, Qs *states)
         if(q0 == states[i].state)
             return i;
     }
+    return 0;
 }
 
 int find_now_sign(char &q, newQ &new_state){
@@ -165,8 +170,14 @@ void update(NewQ &new_state, set<NewQ> &new_states, int &state_num, Qs *states)
     for(int i = 0; i < num; i++)
     {
         set<char> *new_set = new set<char>;
+        set<NewQ>:: iterator it;
+        int t = 0;
+        for(it = new_states.begin(); it != new_states.end(); it++)
+        {
+            if(it->stateset == new_state.trans[i].next)  t++;
+        }
         
-        if(new_states.find(new_state.trans[i].next) == new_states.end())
+        if(!t)
         {
             NewQ *next_new_state = new NewQ;
             next_new_state->stateset = new_state.trans[i].next;
