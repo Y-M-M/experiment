@@ -4,6 +4,9 @@
         "cstring": "cpp",
         "iostream": "cpp",
         "cstdio": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "set": "cpp",
+        "__tree": "cpp",
+        "bitset": "cpp"
     }
 }

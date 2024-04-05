@@ -17,7 +17,6 @@ set的用法：https://cloud.tencent.com/developer/article/2301483
 using namespace std;
 
 
-
 typedef struct transfer{
     char sign;
     char next;
@@ -44,17 +43,6 @@ char read()//忽略空格和回车，读取字符
     char c = getchar();
     while(c == ' ' || c == '\n') c = getchar();
     return c;
-}
-
-void intial()
-{
-    vector<newQ> trans;
-    
-}
-
-void find_state()
-{
-
 }
 
 void printNFA(int &states_num, Qs * states, int &sign_num, char* signs, char &q0, int &F_num, char *F)
@@ -92,6 +80,99 @@ void printNFA(int &states_num, Qs * states, int &sign_num, char* signs, char &q0
     for(int i = 0; i < F_num; i++)
     {
         printf("%c%c", F[i], " \n"[i == F_num-1]);
+    }
+}
+
+int find_state(char q0, int &state_num, Qs *states)
+{
+    for(int i = 0; i < state_num; i++)
+    {
+        if(q0 == states[i].state)
+            return i;
+    }
+}
+
+int find_now_sign(char &q, newQ &new_state){
+    int num = new_state.trans.size();
+    int flag = 0;
+    for(int i = 0; i < num; i++)
+    {
+        if(new_state.trans[i].sign == q)
+        {    
+            flag = i;
+            return flag;
+        }
+    }
+    return flag;
+}
+
+void intial(newQ &new_state, char &q0, int &state_num, Qs *states)
+{
+    new_state.stateset.insert(q0);
+    int t = find_state(q0, state_num, states);
+    int num = states[t].trans.size();
+    for(int i = 0; i < num; i++)
+    {
+        char p = q0;
+        char q = states[t].trans[i].sign;
+        char r = states[t].trans[i].next;
+        int m = find_now_sign(q, new_state);
+        if(m)
+        {
+            new_state.trans[m].next.insert(r);
+        }
+        else
+        {
+            Transfer_new build;
+            build.sign = q;
+            build.next.insert(r);
+        }
+    }
+}
+
+void build(newQ *new_state, set<char> &q0, int &state_num, Qs *states)
+{
+    set<char>::iterator it;
+    for(it = new_state->stateset.begin(); it != new_state->stateset.end(); it++){
+        int t = find_state(*it, state_num, states);
+        int num = states[t].trans.size();
+        for(int i = 0; i < num; i++)
+        {
+            char p = *it;
+            char q = states[t].trans[i].sign;
+            char r = states[t].trans[i].next;
+            int m = find_now_sign(q, *new_state);
+            if(m)
+            {
+                new_state->trans[m].next.insert(r);
+            }
+            else
+            {
+                Transfer_new buildit;
+                buildit.sign = q;
+                buildit.next.insert(r);
+            }
+        }
+    }
+}
+
+
+
+
+void update(NewQ &new_state, set<NewQ> &new_states, int &state_num, Qs *states)
+{  
+    int num = new_state.trans.size();
+    for(int i = 0; i < num; i++)
+    {
+        set<char> *new_set = new set<char>;
+        
+        if(new_states.find(new_state.trans[i].next) == new_states.end())
+        {
+            NewQ *next_new_state = new NewQ;
+            next_new_state->stateset = new_state.trans[i].next;
+            build(next_new_state, *new_set, state_num, states);
+            update(*next_new_state, new_states, state_num, states);
+        }
     }
 }
 
@@ -147,9 +228,13 @@ int main()
     
     
     printNFA(states_num, states, sign_num, signs, q0, F_num, F);
-    vector<NewQ> new_states;
-    intial();//将起始状态初始化
-    find_state();
+    set<NewQ> new_states;
+
+    NewQ new_state;
+    intial(new_state, q0, states_num, states);//将起始状态初始化
+    new_states.insert(new_state);
+    update(new_state, new_states, states_num, states);
+    
     printDFA();
     return 0;
 }
