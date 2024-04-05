@@ -187,8 +187,58 @@ void update(NewQ &new_state, set<NewQ> &new_states, int &state_num, Qs *states)
     }
 }
 
-void printDFA(){
 
+void printDFA(set<NewQ> &new_states, int &sign_num, vector<char> signs, char q0)
+{
+    printf("转化而成的DFA如下：\n");
+    printf("Q:\n");
+    set<NewQ>:: iterator it;
+    for(it = new_states.begin(); it != new_states.end(); it++)
+    {
+        printf("{ ");
+        set<char>:: iterator iit;
+        for(iit = it->stateset.begin(); iit != it->stateset.end(); iit++)
+        {
+            printf("%c ", *it);
+        }
+        printf("}\n");
+    }
+    printf("\n");
+    printf("T:\n");
+    for(int i = 0; i < sign_num; i++)
+    {
+        printf("%c%c", signs[i], " \n"[i == sign_num - 1]);
+    }
+    printf("\n");
+    printf("delta:\n");
+    set<NewQ>:: iterator it;
+    for(it = new_states.begin(); it != new_states.end(); it++)
+    {
+        for(int i = 0; i < it->trans.size(); i++)
+        {
+            printf("{");
+            set<char>:: iterator iit;
+            for(iit = it->stateset.begin(); iit != it->stateset.end(); iit++)
+            {
+                printf("%c ", *it);
+            }
+            printf("} ");
+            printf("%c ", it->trans[i].sign);
+            printf("{ ");
+            set<char>:: iterator iit;
+            for(iit = it->trans[i].next.begin(); iit != it->trans[i].next.end(); iit++)
+            {
+                printf("%c ", *iit);
+            }
+            printf("}\n");
+        }
+    }
+    printf("\n");
+    printf("q0:\n");
+    printf("%c\n", q0);
+    printf("\n");
+    printf("F:\n");
+    set<newQ>:: iterator
 }
 
 
@@ -246,7 +296,6 @@ int main()
     new_states.insert(new_state);
     update(new_state, new_states, states_num, states);
     
-    printDFA();
     return 0;
 }
 
