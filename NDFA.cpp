@@ -121,7 +121,7 @@ int main()
     printf("请输入您将输入的转移函数的个数：\n");
     int delta_num = 0;
     scanf("%d", &delta_num);
-    printf("请输入转移函数，格式为p(当前状态) q(转移字符) r(下一个状态)，用空格或回车分隔");
+    printf("请输入转移函数，格式为p(当前状态) q(转移字符) r(下一个状态)，用空格或回车分隔\n");
     for(int i = 0; i < delta_num; i++)
     {
         char p, q, r;
@@ -136,7 +136,6 @@ int main()
     //读取q0
     printf("请输入起始状态q0：\n");
     char q0 = read();
-    q0 = read();
     //读取T
     printf("请输入终结状态T的数目：\n");
     int F_num = 0;
