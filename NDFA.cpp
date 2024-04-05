@@ -46,13 +46,9 @@ char read()//忽略空格和回车，读取字符
     return c;
 }
 
-
-void intial(vector<NewQ> new_Q, char &q0, Qs *state)
+void intial()
 {
-    set <char> DFA_state;
-    DFA_state.insert(q0);
-    int position = 0;
-    new_Q[++position].stateset = DFA_state;
+    
 }
 
 void find_state()
@@ -68,11 +64,13 @@ void printNFA(int &states_num, Qs * states, int &sign_num, char* signs, char &q0
     {
         printf("%c%c", states[i].state, " \n"[i == states_num - 1]);
     }
+    printf("\n");
     printf("T:\n");
     for(int i = 0; i < sign_num; i++)
     {
         printf("%c%c", signs[i], " \n"[i == sign_num - 1]);
     }
+    printf("\n");
     printf("delta:\n");
     for(int i = 0; i < states_num; i++)
     {
@@ -85,8 +83,10 @@ void printNFA(int &states_num, Qs * states, int &sign_num, char* signs, char &q0
             printf("%c %c %c\n", p, q, r);
         }
     }
+    printf("\n");
     printf("q0:\n");
     printf("%c\n", q0);
+    printf("\n");
     printf("F:\n");
     for(int i = 0; i < F_num; i++)
     {
@@ -139,15 +139,15 @@ int main()
     //读取T
     printf("请输入终结状态T的数目：\n");
     int F_num = 0;
-    char F[F_num];
     scanf("%d", &F_num);
+    char F[F_num];
     printf("请依次输入终结状态：\n");
     for(int i = 0; i < F_num; i++) F[i] = read();
     
     
     printNFA(states_num, states, sign_num, signs, q0, F_num, F);
     vector<NewQ> new_Q;
-    intial(new_Q, q0, states);//将起始状态初始化
+    intial();//将起始状态初始化
     find_state();
     printDFA();
     return 0;
