@@ -27,6 +27,11 @@ typedef struct Q{
     vector<Transfer> trans;
 }Qs;
 
+typedef struct newQ{
+    set<char> stateset;
+    vector<Transfer> trans;
+}NewQ;
+
 char read()//忽略空格和回车，读取字符
 {
     char c = getchar();
@@ -34,7 +39,7 @@ char read()//忽略空格和回车，读取字符
     return c;
 }
 
-void readNFA(int &states_num, Qs *state, int &sign_num, char *signs, int &delta_num, char &q0, int &F_num, char *F)
+void readNFA(int &states_num, Qs *states, int &sign_num, char *signs, int &delta_num, char &q0, int &F_num, char *F)
 {
     printf("本程序完成从NFA到DFA的转化，接下来请您输入需要进行转化的NFA：\n");
     //读取Q
@@ -72,7 +77,7 @@ void readNFA(int &states_num, Qs *state, int &sign_num, char *signs, int &delta_
     for(int i = 0; i < F_num; i++) F[i] = read();
 }
 
-void change_to_DFA()
+void change_to_DFA(vector<NewQ Q1>, char &q0, Qs *state)
 {
 
 }
@@ -83,16 +88,16 @@ void printDFA();
 int main()
 {
     int states_num = 0;
-    Qs state[states_num];
+    Qs states[states_num];
     int sign_num = 0;
     char signs[sign_num];
     int delta_num = 0;
     char q0 = read();
     int F_num = 0;
     char F[F_num];
-    readNFA(states_num, state, sign_num, signs, delta_num, q0, F_num, F);//读取NFA
-    vector<set<char>> Q1;
-    change_to_DFA();
+    readNFA(states_num, states, sign_num, signs, delta_num, q0, F_num, F);//读取NFA
+    vector<NewQ> Q1;
+    change_to_DFA(Q1, q0, states);
     printDFA();
     return 0;
 }
