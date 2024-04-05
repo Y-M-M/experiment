@@ -22,6 +22,7 @@ typedef struct transfer{
     char sign;
     char next;
 }Transfer;
+
 typedef struct Q{
     char state;
     vector<Transfer> trans;
@@ -77,9 +78,13 @@ void readNFA(int &states_num, Qs *states, int &sign_num, char *signs, int &delta
     for(int i = 0; i < F_num; i++) F[i] = read();
 }
 
-void change_to_DFA(vector<NewQ> Q1, char &q0, Qs *state)
+void change_to_DFA(vector<NewQ> new_Q, char &q0, Qs *state)
 {
-
+    set <char> DFA_state;
+    DFA_state.insert(q0);
+    int position = 0;
+    new_Q[++position].stateset = DFA_state;
+    
 }
 
 void printDFA();
@@ -96,8 +101,8 @@ int main()
     int F_num = 0;
     char F[F_num];
     readNFA(states_num, states, sign_num, signs, delta_num, q0, F_num, F);//读取NFA
-    vector<NewQ> Q1;
-    change_to_DFA(Q1, q0, states);
+    vector<NewQ> new_Q;
+    change_to_DFA(new_Q, q0, states);
     printDFA();
     return 0;
 }
