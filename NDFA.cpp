@@ -28,9 +28,15 @@ typedef struct Q{
     vector<Transfer> trans;
 }Qs;
 
+typedef struct transfer_new
+{
+    char sign;
+    set<char> next;
+}Transfer_new;
+
 typedef struct newQ{
     set<char> stateset;
-    vector<Transfer> trans;
+    vector<Transfer_new> trans;
 }NewQ;
 
 char read()//忽略空格和回车，读取字符
@@ -78,14 +84,17 @@ void readNFA(int &states_num, Qs *states, int &sign_num, char *signs, int &delta
     for(int i = 0; i < F_num; i++) F[i] = read();
 }
 
-void change_to_DFA(vector<NewQ> new_Q, char &q0, Qs *state)
+void intial(vector<NewQ> new_Q, char &q0, Qs *state)
 {
     set <char> DFA_state;
     DFA_state.insert(q0);
     int position = 0;
     new_Q[++position].stateset = DFA_state;
-    
 }
+
+void find_state();
+
+void printNFA();
 
 void printDFA();
 
@@ -101,8 +110,10 @@ int main()
     int F_num = 0;
     char F[F_num];
     readNFA(states_num, states, sign_num, signs, delta_num, q0, F_num, F);//读取NFA
+    printNFA();
     vector<NewQ> new_Q;
-    change_to_DFA(new_Q, q0, states);
+    intial(new_Q, q0, states);//将起始状态初始化
+    find_state();
     printDFA();
     return 0;
 }
