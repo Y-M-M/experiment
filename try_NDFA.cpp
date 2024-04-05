@@ -188,7 +188,7 @@ void update(NewQ &new_state, set<NewQ> &new_states, int &state_num, Qs *states)
 }
 
 
-void printDFA(set<NewQ> &new_states, int &sign_num, vector<char> signs, char q0, vector<char> F, int F_num)
+void printDFA(set<NewQ> &new_states, int &sign_num, char* signs, char q0, char* F, int F_num)
 {
     printf("转化而成的DFA如下：\n");
     printf("Q:\n");
@@ -199,7 +199,7 @@ void printDFA(set<NewQ> &new_states, int &sign_num, vector<char> signs, char q0,
         set<char>:: iterator iit;
         for(iit = it->stateset.begin(); iit != it->stateset.end(); iit++)
         {
-            printf("%c ", *it);
+            cout << *iit << " ";
         }
         printf("}\n");
     }
@@ -211,7 +211,6 @@ void printDFA(set<NewQ> &new_states, int &sign_num, vector<char> signs, char q0,
     }
     printf("\n");
     printf("delta:\n");
-    set<NewQ>:: iterator it;
     for(it = new_states.begin(); it != new_states.end(); it++)
     {
         for(int i = 0; i < it->trans.size(); i++)
@@ -220,15 +219,14 @@ void printDFA(set<NewQ> &new_states, int &sign_num, vector<char> signs, char q0,
             set<char>:: iterator iit;
             for(iit = it->stateset.begin(); iit != it->stateset.end(); iit++)
             {
-                printf("%c ", *it);
+                cout << *iit << ' ';
             }
             printf("} ");
             printf("%c ", it->trans[i].sign);
             printf("{ ");
-            set<char>:: iterator iit;
             for(iit = it->trans[i].next.begin(); iit != it->trans[i].next.end(); iit++)
             {
-                printf("%c ", *iit);
+                cout << *iit << ' ';
             }
             printf("}\n");
         }
@@ -238,7 +236,6 @@ void printDFA(set<NewQ> &new_states, int &sign_num, vector<char> signs, char q0,
     printf("%c\n", q0);
     printf("\n");
     printf("F:\n");
-    set<newQ>:: iterator it;
     for(it = new_states.begin(); it != new_states.end(); it++)
     {
         set<char>:: iterator iit;
@@ -253,7 +250,7 @@ void printDFA(set<NewQ> &new_states, int &sign_num, vector<char> signs, char q0,
                     printf("{ ");
                     for(iiit = it->stateset.begin(); iiit != it->stateset.end(); iiit++)
                     {
-                        printf("%c ", *iiit);
+                        cout << *iiit << ' ';
                     }
                     printf("}\n");
                     break;
@@ -317,6 +314,8 @@ int main()
     intial(new_state, q0, states_num, states);//将起始状态初始化
     new_states.insert(new_state);
     update(new_state, new_states, states_num, states);
+
+    printDFA(new_states, sign_num, signs, q0, F, F_num);
     
     return 0;
 }
