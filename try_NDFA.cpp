@@ -188,7 +188,7 @@ void update(NewQ &new_state, set<NewQ> &new_states, int &state_num, Qs *states)
 }
 
 
-void printDFA(set<NewQ> &new_states, int &sign_num, vector<char> signs, char q0)
+void printDFA(set<NewQ> &new_states, int &sign_num, vector<char> signs, char q0, vector<char> F, int F_num)
 {
     printf("转化而成的DFA如下：\n");
     printf("Q:\n");
@@ -238,7 +238,29 @@ void printDFA(set<NewQ> &new_states, int &sign_num, vector<char> signs, char q0)
     printf("%c\n", q0);
     printf("\n");
     printf("F:\n");
-    set<newQ>:: iterator
+    set<newQ>:: iterator it;
+    for(it = new_states.begin(); it != new_states.end(); it++)
+    {
+        set<char>:: iterator iit;
+        for(iit = it->stateset.begin(); iit != it->stateset.end(); iit++)
+        {
+            char c = *iit;
+            for(int i = 0; i < F_num; i++)
+            {
+                if(c == F[i])
+                {
+                    set<char>:: iterator iiit;
+                    printf("{ ");
+                    for(iiit = it->stateset.begin(); iiit != it->stateset.end(); iiit++)
+                    {
+                        printf("%c ", *iiit);
+                    }
+                    printf("}\n");
+                    break;
+                }
+            }
+        }
+    }
 }
 
 
