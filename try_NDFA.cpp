@@ -94,12 +94,12 @@ int find_state(char q0, int &state_num, Qs *states)
         if(q0 == states[i].state)
             return i;
     }
-    return 0;
+    return -1;
 }
 
 int find_now_sign(char &q, newQ &new_state){
     int num = new_state.trans.size();
-    int flag = 0;
+    int flag = -1;
     for(int i = 0; i < num; i++)
     {
         if(new_state.trans[i].sign == q)
@@ -122,7 +122,7 @@ void intial(newQ &new_state, char &q0, int &state_num, Qs *states)
         char q = states[t].trans[i].sign;
         char r = states[t].trans[i].next;
         int m = find_now_sign(q, new_state);
-        if(m)
+        if(m != -1)
         {
             new_state.trans[m].next.insert(r);
         }
@@ -131,31 +131,35 @@ void intial(newQ &new_state, char &q0, int &state_num, Qs *states)
             Transfer_new build;
             build.sign = q;
             build.next.insert(r);
+            new_state.trans.push_back(build);
         }
     }
 }
 
-void build(newQ *new_state, set<char> &q0, int &state_num, Qs *states)
+//根据新状态，更新转移函数
+void build(newQ *new_state, int &state_num, Qs *states)
 {
     set<char>::iterator it;
-    for(it = new_state->stateset.begin(); it != new_state->stateset.end(); it++){
-        int t = find_state(*it, state_num, states);
+    for(it = new_state->stateset.begin(); it != new_state->stateset.end(); it++)//遍历新状态中的每一个子状态
+    {
+        int t = find_state(*it, state_num, states);//找到状态编号
         int num = states[t].trans.size();
-        for(int i = 0; i < num; i++)
+        for(int i = 0; i < num; i++)//遍历原状态所有的转移函数
         {
             char p = *it;
             char q = states[t].trans[i].sign;
             char r = states[t].trans[i].next;
             int m = find_now_sign(q, *new_state);
-            if(m)
+            if(m != -1)//如果已经有了关于该字符的转移函数，添加即可
             {
                 new_state->trans[m].next.insert(r);
             }
-            else
+            else//没有关于该字符的转移函数，需要重新创建
             {
-                Transfer_new buildit;
-                buildit.sign = q;
-                buildit.next.insert(r);
+                Transfer_new *buildit = new Transfer_new;
+                buildit->sign = q;
+                buildit->next.insert(r);
+                new_state->trans.push_back(*buildit);
             }
         }
     }
@@ -163,25 +167,24 @@ void build(newQ *new_state, set<char> &q0, int &state_num, Qs *states)
 
 
 
-
+//从NewQ这个新的状态开始，将其下一个状态也添加入新的状态集合
 void update(NewQ &new_state, set<NewQ> &new_states, int &state_num, Qs *states)
 {  
     int num = new_state.trans.size();
     for(int i = 0; i < num; i++)
     {
-        set<char> *new_set = new set<char>;
         set<NewQ>:: iterator it;
         int t = 0;
-        for(it = new_states.begin(); it != new_states.end(); it++)
+        for(it = new_states.begin(); it != new_states.end(); it++)//查看此状态有没有被添加入状态集合
         {
             if(it->stateset == new_state.trans[i].next)  t++;
         }
         
-        if(!t)
+        if(!t)//此前未出现过，则将此状态添加进状态集合
         {
             NewQ *next_new_state = new NewQ;
             next_new_state->stateset = new_state.trans[i].next;
-            build(next_new_state, *new_set, state_num, states);
+            build(next_new_state, state_num, states);
             update(*next_new_state, new_states, state_num, states);
         }
     }
@@ -241,6 +244,7 @@ void printDFA(set<NewQ> &new_states, int &sign_num, char* signs, char q0, char* 
         set<char>:: iterator iit;
         for(iit = it->stateset.begin(); iit != it->stateset.end(); iit++)
         {
+            int flag = 0;
             char c = *iit;
             for(int i = 0; i < F_num; i++)
             {
@@ -253,9 +257,11 @@ void printDFA(set<NewQ> &new_states, int &sign_num, char* signs, char q0, char* 
                         cout << *iiit << ' ';
                     }
                     printf("}\n");
+                    flag = 1;
                     break;
                 }
             }
+            if(flag) break;
         }
     }
 }
@@ -309,11 +315,18 @@ int main()
     
     printNFA(states_num, states, sign_num, signs, q0, F_num, F);
     set<NewQ> new_states;
+    
+    cout << "ok0" << endl;
 
     NewQ new_state;
     intial(new_state, q0, states_num, states);//将起始状态初始化
     new_states.insert(new_state);
+
+    cout << "ok1" << endl;
+
     update(new_state, new_states, states_num, states);
+
+    cout << "ok2" << endl;
 
     printDFA(new_states, sign_num, signs, q0, F, F_num);
     
