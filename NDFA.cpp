@@ -27,7 +27,7 @@ typedef struct Q{
     vector<Transfer> trans;
 }Qs;
 
-char read()//忽略空格和回车
+char read()//忽略空格和回车，读取字符
 {
     char c = getchar();
     while(c == ' ' || c == '\n') c = getchar();
@@ -72,7 +72,10 @@ void readNFA(int &states_num, Qs *state, int &sign_num, char *signs, int &delta_
     for(int i = 0; i < F_num; i++) F[i] = read();
 }
 
-void change_to_DFA();
+void change_to_DFA()
+{
+
+}
 
 void printDFA();
 
