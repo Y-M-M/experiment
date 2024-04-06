@@ -65,10 +65,12 @@ char read()//忽略空格和回车，读取字符
 
 void printset(set<char> now_set){
     set<char>:: iterator it;
-    cout << "{ ";
-    for(it = now_set.begin(); it != now_set.end(); it++)
+    cout << "{";
+    for(it = now_set.begin(); it != now_set.end();)
     {
-        cout << *it << ' ';
+        cout << *it;
+        it++;
+        if(it != now_set.end()) cout << ',';
     }
     cout << "}";
 }
@@ -206,6 +208,7 @@ void printDFA(set<NewQ> &new_states, int &sign_num, char* signs, char q0, char* 
     for(it = new_states.begin(); it != new_states.end(); it++)
     {
         printset(it->stateset);
+        cout << endl;
     }
     cout << endl;
 
@@ -225,8 +228,8 @@ void printDFA(set<NewQ> &new_states, int &sign_num, char* signs, char q0, char* 
             cout << ' ';
             cout << it->trans[i].sign << ' ';
             printset(it->trans[i].next);
+            cout << endl;
         }
-        cout << endl;
     }
     cout << endl;
 
