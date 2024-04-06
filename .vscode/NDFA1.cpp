@@ -156,7 +156,7 @@ int main()
     printNFA();
     vector<NewQ> new_Q;
     intial(new_Q, q0, states);//将起始状态初始化
-    find_state();
+    find_state(new_Q, states, states_num, signs , sign_num);
     printDFA();
     return 0;
 }

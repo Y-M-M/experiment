@@ -46,15 +46,56 @@ char read()//忽略空格和回车，读取字符
     return c;
 }
 
-void intial()
+void intial(vector<NewQ> new_Q, char& q0, Qs* state)
 {
-    vector<newQ> trans;
-    
+    set <char> DFA_state;
+    DFA_state.insert(q0);
+    int position = 0;
+    new_Q[++position].stateset = DFA_state;
 }
 
-void find_state()
-{
-
+void find_state(vector<NewQ>& new_Q, Qs* states, int states_num, char* signs , const int sign_num) {
+    int position = 0;
+    while (position < new_Q.size()) {
+        NewQ current_state = new_Q[position];
+        // 遍历每个输入字符
+        for (int i = 0; i < sign_num; i++) {
+            char input = signs[i];
+            set<char> next_states;
+            // 遍历当前状态集合中的每个状态
+            for (char state : current_state.stateset) {
+                // 查找当前状态在NFA中的索引
+                int index;
+                for (index = 0; index < states_num; index++) {
+                    if (states[index].state == state) {
+                        break;
+                    }
+                }
+                // 在该状态的转移函数中查找输入字符对应的下一个状态
+                for (Transfer trans : states[index].trans) {
+                    if (trans.sign == input) {
+                        next_states.insert(trans.next);
+                    }
+                }
+            }
+            // 如果新的状态集合不为空且未出现过，则加入到DFA中
+            if (!next_states.empty()) {
+                bool is_new_state = true;
+                for (NewQ q : new_Q) {
+                    if (q.stateset == next_states) {
+                        is_new_state = false;
+                        break;
+                    }
+                }
+                if (is_new_state) {
+                    new_Q.push_back({ next_states, {} });
+                }
+                // 添加到当前状态的转移函数中
+                current_state.trans.push_back({ input, next_states });
+            }
+        }
+        position++;
+    }
 }
 
 void printNFA(int &states_num, Qs * states, int &sign_num, char* signs, char &q0, int &F_num, char *F)
@@ -95,8 +136,58 @@ void printNFA(int &states_num, Qs * states, int &sign_num, char* signs, char &q0
     }
 }
 
-void printDFA(){
+void printset(set<char> now_set){
+    set<char>:: iterator it;
+    cout << "{ ";
+    for(it = now_set.begin(); it != now_set.end(); it++)
+    {
+        cout << *it << ' ';
+    }
+    cout << "}";
+}
 
+void printDFA(vector <NewQ> new_Q, char *signs, int sign_num, char q0)
+{
+    printf("转换成的DFA如下：\n");
+    printf("Q:\n");
+    for(int i = 0; i < new_Q.size(); i++) printset(new_Q[i].stateset);
+    printf("\n");
+    printf("T:\n");
+    for(int i = 0; i < sign_num; i++)
+    {
+        printf("%c%c", signs[i], " \n"[i == sign_num - 1]);
+    }
+    printf("\n");
+    printf("delta:\n");
+    for(int i = 0; i < new_Q.size(); i++)
+    {
+        int my_size = new_Q[i].trans.size();
+        for(int j = 0; j < my_size; j++)
+        {
+            printset(new_Q[i].stateset);
+            cout << " ";
+            cout << new_Q[i].trans[j].sign << ' ';
+            printset(new_Q[i].trans[j].next);
+            cout << endl;
+        }
+    }
+    printf("\n");
+    printf("q0:\n");
+    printf("%c\n", q0);
+    printf("\n");
+    printf("F:\n");
+    for(int i = 0; i < new_Q.size(); i++)
+    {
+        for(int j = 0; j < sign_num; j++)
+        {
+            if(new_Q[i].stateset.find(signs[j]) != new_Q[i].stateset.end())
+            {
+                printset(new_Q[i].stateset);
+                cout << endl;
+                break;
+            }
+        }
+    }
 }
 
 
@@ -147,10 +238,13 @@ int main()
     
     
     printNFA(states_num, states, sign_num, signs, q0, F_num, F);
-    vector<NewQ> new_states;
-    intial();//将起始状态初始化
-    find_state();
-    printDFA();
+    vector<NewQ> new_Q;
+    printf("ok1\n");
+    intial(new_Q, q0, states);//将起始状态初始化
+    printf("ok2\n");
+    find_state(new_Q, states, states_num, signs , sign_num);
+    printf("ok3\n");
+    printDFA(new_Q, signs, sign_num, q0);
     return 0;
 }
 
