@@ -38,8 +38,22 @@ typedef struct newQ
     set<char> stateset;
     vector<Transfer_new> trans;
     bool operator<(const newQ& other) const {
+    // 比较 stateset 的大小
+    if (stateset.size() != other.stateset.size())
         return stateset.size() < other.stateset.size();
+
+    // 比较 stateset 中的元素
+    auto it1 = stateset.begin();
+    auto it2 = other.stateset.begin();
+    while (it1 != stateset.end() && it2 != other.stateset.end()) {
+        if (*it1 != *it2)
+            return *it1 < *it2;
+        ++it1;
+        ++it2;
     }
+    return false;
+}
+
 }NewQ;
 
 char read()//忽略空格和回车，读取字符
@@ -156,10 +170,10 @@ void build(newQ &new_state, int &state_num, Qs *states)
             }
             else//没有关于该字符的转移函数，需要重新创建
             {
-                Transfer_new *buildit = new Transfer_new;
-                buildit->sign = q;
-                buildit->next.insert(r);
-                new_state.trans.push_back(*buildit);
+                Transfer_new buildit;
+                buildit.sign = q;
+                buildit.next.insert(r);
+                new_state.trans.push_back(buildit);
             }
         }
     }
@@ -171,7 +185,7 @@ void build(newQ &new_state, int &state_num, Qs *states)
 void update(NewQ &new_state, set<NewQ> &new_states, int &state_num, Qs *states)
 {  
     int num = new_state.trans.size();
-    for(int i = 0; i < num; i++)
+    for(int i = 0; i < num; i++)//遍历新状态的下一个状态
     {
         set<NewQ>:: iterator it;
         int t = 0;
@@ -180,12 +194,34 @@ void update(NewQ &new_state, set<NewQ> &new_states, int &state_num, Qs *states)
             if(it->stateset == new_state.trans[i].next)  t++;
         }
         
+        
         if(!t)//此前未出现过，则将此状态添加进状态集合
         {
             NewQ next_new_state;
             next_new_state.stateset = new_state.trans[i].next;
-            build(next_new_state, state_num, states);
-            new_states.insert(next_new_state);
+            build(next_new_state, state_num, states);//更新新状态的下一个状态
+            // set<char>:: iterator iit;
+            // printf("即将添加新状态:\n");
+            // cout << "{ ";
+            // for(iit = next_new_state.stateset.begin(); iit != next_new_state.stateset.end(); iit++)
+            // {
+            //     cout << *iit << ' ';
+            // }
+            // cout << "}\n";
+            new_states.insert(next_new_state);//将新状态插入
+            // printf("更新后的Q:\n");
+            // set<NewQ>:: iterator it;
+            // for(it = new_states.begin(); it != new_states.end(); it++)
+            // {
+            //     printf("{ ");
+            //     set<char>:: iterator iit;
+            //     for(iit = it->stateset.begin(); iit != it->stateset.end(); iit++)
+            //     {
+            //         cout << *iit << " ";
+            //     }
+            //     printf("}\n");
+            // }
+            // printf("\n");
             update(next_new_state, new_states, state_num, states);
         }
     }
@@ -219,7 +255,7 @@ void printDFA(set<NewQ> &new_states, int &sign_num, char* signs, char q0, char* 
     {
         for(int i = 0; i < it->trans.size(); i++)
         {
-            printf("{");
+            printf("{ ");
             set<char>:: iterator iit;
             for(iit = it->stateset.begin(); iit != it->stateset.end(); iit++)
             {
@@ -245,7 +281,6 @@ void printDFA(set<NewQ> &new_states, int &sign_num, char* signs, char q0, char* 
         set<char>:: iterator iit;
         for(iit = it->stateset.begin(); iit != it->stateset.end(); iit++)
         {
-            int flag = 0;
             char c = *iit;
             for(int i = 0; i < F_num; i++)
             {
@@ -258,11 +293,9 @@ void printDFA(set<NewQ> &new_states, int &sign_num, char* signs, char q0, char* 
                         cout << *iiit << ' ';
                     }
                     printf("}\n");
-                    flag = 1;
                     break;
                 }
             }
-            if(flag) break;
         }
     }
 }
