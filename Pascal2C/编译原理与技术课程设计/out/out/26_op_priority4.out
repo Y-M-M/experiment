@@ -1,0 +1,13 @@
+Now start pre process...
+Now start lex and syntax analyse...
+Lex analyse succeed!!!
+
+Syntax analyse succeed!!!
+
+Now start semantic analysing...
+************************Here are the semantic errors***********************
+[Undefined identifier!] <Line 10> false has not been defined.
+[Assign statement type mismatch!] <Left at line 10, right at line 10> Left "flag" type is boolean while right "false" type is error.
+[Undefined identifier!] <Line 13> true has not been defined.
+[Assign statement type mismatch!] <Left at line 13, right at line 13> Left "flag" type is boolean while right "true" type is error.
+********************Please correct your semantic errors********************

@@ -1,0 +1,10 @@
+Now start pre process...
+Now start lex and syntax analyse...
+Lex analyse succeed!!!
+
+Syntax analyse succeed!!!
+
+Now start semantic analysing...
+************************Here are the semantic errors***********************
+[Symbol kinds mismatch!] <Line 43> "tran" defined at line 8 is a function but not a procedure.
+********************Please correct your semantic errors********************

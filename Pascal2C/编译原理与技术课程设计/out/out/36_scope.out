@@ -1,0 +1,15 @@
+Now start pre process...
+Now start lex and syntax analyse...
+Lex analyse succeed!!!
+
+************************Here are the syntax errors***********************
+syntax error, location: 23.14
+syntax error, missing actual parameter list of function call, location: 23.14
+syntax error, location: 23.19
+syntax error, missing keyword "then", location: 23.19
+syntax error, missing keyword "end", location: 23.20
+syntax error, missing a semicolon here, location: 23.20
+syntax error, location: 25.6
+syntax error, missing a dot here, location: 25.6
+********************Please correct your syntax errors********************
+

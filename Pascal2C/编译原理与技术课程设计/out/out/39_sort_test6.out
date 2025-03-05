@@ -1,0 +1,11 @@
+Now start pre process...
+Now start lex and syntax analyse...
+Lex analyse succeed!!!
+
+Syntax analyse succeed!!!
+
+Now start semantic analysing...
+************************Here are the semantic errors***********************
+[Duplicate defined error!] <Line 7> "countingsort" has already been defined as a (sub)program name at line 1.
+[Symbol kinds mismatch!] <Line 39> "countingsort" defined at line 1 is a (sub)program name but not a procedure.
+********************Please correct your semantic errors********************

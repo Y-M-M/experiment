@@ -1,0 +1,13 @@
+Now start pre process...
+Now start lex and syntax analyse...
+Lex analyse succeed!!!
+
+Syntax analyse succeed!!!
+
+Now start semantic analysing...
+Semantic analyse succeed!!!
+
+Now start generating the C Program code...
+Code Generate succeed!!!
+Please check C code in ../../open_set/16_mod.c
+

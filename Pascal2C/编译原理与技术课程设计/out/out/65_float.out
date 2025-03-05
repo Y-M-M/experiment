@@ -1,0 +1,18 @@
+Now start pre process...
+Now start lex and syntax analyse...
+Lex analyse succeed!!!
+
+************************Here are the syntax errors***********************
+syntax error, location: 35.17
+syntax error, incomplete formal parameter list, location: 35.16-35.17
+syntax error, missing a semicolon here, location: 35.18
+syntax error, location: 40.14
+syntax error, incomplete formal parameter list, location: 40.13-40.14
+syntax error, missing a semicolon here, location: 40.15
+syntax error, location: 48.11
+syntax error, missing keyword "then", location: 47.14
+syntax error, missing keyword "end", location: 48.12
+syntax error, missing a semicolon here, location: 48.12
+fatal error in program body, location: 75.4
+********************Please correct your syntax errors********************
+

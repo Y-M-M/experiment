@@ -1,0 +1,8 @@
+Now start pre process...
+Now start lex and syntax analyse...
+************************Here are the lexical errors***********************
+[Identifier length too large, exceed 100] 4.1-4.127
+[Identifier length too large, exceed 100] 9.3-9.129
+[Identifier length too large, exceed 100] 13.11-13.137
+********************Please correct your lexical errors********************
+
