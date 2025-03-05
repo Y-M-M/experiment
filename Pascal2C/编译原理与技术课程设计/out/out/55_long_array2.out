@@ -1,9 +1,0 @@
-Now start pre process...
-Now start lex and syntax analyse...
-Lex analyse succeed!!!
-
-************************Here are the syntax errors***********************
-syntax error, location: 18.7
-fatal error in program body, location: 30.4
-********************Please correct your syntax errors********************
-
